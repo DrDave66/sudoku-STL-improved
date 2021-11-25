@@ -15,17 +15,17 @@ Sudoku::Sudoku(string puzzle) {
 
 void Sudoku::createVectors(void) {
 	// create vector of squares
-    uint32_t i, r, c;
+    uint32_t i;
     vector<string> vs;
 	vs = crossProduct(rowsText, colsText);
-    for(r = 0 ; r < numRows ; r++) {
-        for (c = 0 ; c < numCols ; c++) {
+    for( auto r : rows) {
+        for ( auto c : cols) {
             squares[r][c] = vs[r + c*numRows];
         }
     }
     cout << "Squares" << endl;
-    for(r = 0 ; r < numRows ; r++) {
-        for (c = 0 ; c < numCols ; c++) {
+    for(auto r : rows) {
+        for (auto c : cols) {
             cout << squares[r][c] << " ";
         }
         cout << endl;
@@ -85,7 +85,16 @@ void Sudoku::createVectors(void) {
         }
         cout << endl;
     }
-    
+
+    // unit dictionary
+    set<string> tempUnits;
+    string sq;
+    for(auto r : rows) {
+        for (auto c : cols) {
+            sq = squares[r][c];
+            for (string ul : unitlist)
+        }
+    }
     
 //	// make unit dictionary - all units that contain the square
 //	for (string sq : squares) {
@@ -545,6 +554,19 @@ bool Sudoku::startGuessing() {
 	}
 	return isPuzzleSolved();
 }
+
+string Sudoku::RCToString(ROWCOL rc) {
+    string retval;
+    retval += (char)('A' + RC_r(rc));
+    retval += (char)('1' + RC_c(rc));
+    return retval;
+}
+
+ROWCOL Sudoku::stringToRC(string rct) {
+    const char* pstr = rct.c_str();
+    return make_tuple((uint8_t)(pstr[0] - 'A'),(char)atoi(&pstr[1]) - 1);
+}
+
  void Sudoku::test(void) {
 
  }

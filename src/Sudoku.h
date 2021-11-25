@@ -20,6 +20,9 @@ using namespace std;
 #include "PrecisionTimeLapse.h"
 #include "sudokuTypes.h"
 
+#define RC_r(x) (get<0>(x))
+#define RC_c(x) (get<1>(x))
+
 class Sudoku
 {
 public:
@@ -54,13 +57,14 @@ public:
 	void printGuessList();
 	void test();
 //private:
+    static string RCToString(ROWCOL);
+    static ROWCOL stringToRC(string);
     
     static const uint32_t numRows = 9;
     static const uint32_t numCols = 9;
     array<uint32_t, 9> rows = {0,1,2,3,4,5,6,7,8};
     array<uint32_t, 9> cols = {0,1,2,3,4,5,6,7,8};
     
-
 	string digitsText = "123456789";
 	string rowsText = "ABCDEFGHI";
 	string colsText = "123456789";
@@ -69,7 +73,8 @@ public:
     array<array<string, 9>, 27> unitlist;
     
     array<array<array<array<string, 9> ,3 > ,9> ,9> newUnits;
-	map<string, vector<vector<string> > > units; // square, squares in unit
+	
+    map<string, vector<vector<string> > > units; // square, squares in unit
 	
     map<string, vector<string> > peers; // square, squares in peers
     set<string> digitSet = { "1","2","3","4","5","6","7","8","9" };
