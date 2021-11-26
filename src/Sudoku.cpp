@@ -13,51 +13,83 @@ Sudoku::Sudoku(string puzzle) {
 	srand((uint32_t)time(NULL));
 }
 
+vector<ROWCOL> Sudoku::crossProductRC(string a, string b) {
+    static vector<ROWCOL> v;
+    v.clear();
+    ROWCOL rc;
+    for (uint8_t bb : b) {
+        for (uint8_t aa : a) {
+            rc = std::make_tuple(aa,bb);
+            v.push_back(rc);
+        }
+    }
+    return v;
+}
+
+vector<string> Sudoku::crossProduct(string a, string b) {
+    vector<string> v;
+    string s;
+    for (auto aa : a) {
+        for (auto bb : b) {
+            s += aa;
+            s += bb;
+            v.push_back(s);
+            s.clear();
+        }
+    }
+    return v;
+}
+
 void Sudoku::createVectors(void) {
 	// create vector of squares
+    array<array<string, numRows> ,numCols> strSquares;
+    array<array<string, 9>, 27> strUnitList;
+    array<array<array<array<string, 9> ,3 > ,9> ,9> strUnits;
+    
     uint32_t i;
-    vector<string> vs;
-	vs = crossProduct(rowsText, colsText);
-    for( auto r : rows) {
-        for ( auto c : cols) {
-            squares[r][c] = vs[r + c*numRows];
+    vector<ROWCOL> rcv;
+    rcv = crossProductRC(rowsText, colsText);
+    for(auto r:rows) {
+        for(auto c:cols) {
+            rcSquares[r][c] = rcv[r + c*9];
         }
     }
-    cout << "Squares" << endl;
-    for(auto r : rows) {
-        for (auto c : cols) {
-            cout << squares[r][c] << " ";
-        }
-        cout << endl;
-    }
+//    cout << "squares:" << endl;
+//    for(auto r:rows) {
+//        for(auto c:cols) {
+//            cout << RCToString(rcSquares[r][c]) << endl;
+//        }
+//    }
+//    cout << endl;
     // create unitlist vector
-	vector<string> temp;
+	vector<ROWCOL> temp;
 	// for each col across the rows
-
-    uint32_t ul = 0;
-    array<string,9> ts;
+    uint8_t ul = 0;
+    array<ROWCOL,9> ts;
+    ul = 0;
 	for (char c : colsText) {
-		temp = crossProduct(rowsText, string(1, c));
+		temp = crossProductRC(rowsText, string(1, c));
         i = 0;
-        for (string s : temp) {
+        for (ROWCOL s : temp) {
             ts[i] = s;
             i++;
         }
-        unitlist[ul] = ts;
+
+        rcUnitList[ul] = ts;
         ul++;
 	}
-//	// for each row across the cols
+// for each row across the cols
 	for (char r : rowsText) {
-		temp = crossProduct(string(1, r), colsText);
+		temp = crossProductRC(string(1, r), colsText);
         i = 0;
-        for(string s : temp) {
+        for(ROWCOL s : temp) {
             ts[i] = s;
             i++;
         }
-        unitlist[ul] = ts;
+        rcUnitList[ul] = ts;
         ul++;
 	}
-//	// for each 9x9 square
+// for each 9x9 square
 	vector<string> sr; // = { "ABC","DEF","GHI" };
 	vector<string> sc; // = { "123", "456", "789" };
 	sr.push_back("ABC");
@@ -68,98 +100,138 @@ void Sudoku::createVectors(void) {
 	sc.push_back("789");
 	for (string r : sr) {
 		for (string c : sc) {
-			temp = crossProduct(r, c);
+			temp = crossProductRC(r, c);
             i = 0;
-            for (string s : temp) {
+            for (ROWCOL s : temp) {
                 ts[i] = s;
                 i++;
             }
-            unitlist[ul] = ts;
+            rcUnitList[ul] = ts;
             ul++;
 		}
 	}
     cout << endl << "UnitList" << endl;
     for(int j = 0 ; j < 27 ; j++) {
         for (i = 0 ; i < 9 ;i++) {
-            cout << unitlist[j][i] << " ";
+            cout << RCToString(rcUnitList[i][j]) << " ";
         }
         cout << endl;
     }
 
-    // unit dictionary
-    set<string> tempUnits;
-    string sq;
+//    // unit dictionary
+    ROWCOL sq;
+    uint32_t unum = 0;
     for(auto r : rows) {
         for (auto c : cols) {
-            sq = squares[r][c];
-            for (string ul : unitlist)
+            unum = 0;
+            sq = rcSquares[r][c];
+            for (array<ROWCOL,9> ul : rcUnitList){
+                for(i = 0 ; i < 9 ; i++) {
+                    if (ul[i] == sq) {
+                        //units[sq][unum] = ul;
+                        rcUnits[r][c][unum] = ul;
+                        unum++;
+
+                    }
+                }
+            }
         }
     }
-    
-//	// make unit dictionary - all units that contain the square
-//	for (string sq : squares) {
-//		vector<vector<string> > tempUnitList;
-//		tempUnitList.clear();
-//		for (vector<string>  ul : unitlist) {
-//			for (string l : ul) {
-//				if (l == sq) {
-//					tempUnitList.push_back(ul);
-//				}
-//			}
-//		}
-//		units[sq] = tempUnitList;
-//	}
-    
-//	// make peer dictionary
-//	for (string s : squares) {
-//		set<string> vec; // use a set so there are no duplicates
-//		for (vector<string> u : units[s]) {
-//			for (string l : u) {
-//				if (l != s) {
-//					vec.insert(l);
-//				}
-//			}
-//		}
-//		vector<string> v(vec.begin(), vec.end());
-//		peers[s] = v;
-//	}
-//	// dict of allowable values
-//	for (string s : squares) {
-//		allowableValues[s] = digits;
-//	}
-}
+////    cout << endl << "Old Unit dictionary" << endl;
+////    // print unit dictionary
+////    for (auto r : rows) {
+////        for (auto c : cols) {
+////            sq = squares[r][c];
+////            cout << "Old Unit Dict: " << squares[r][c] << endl;
+////            for (array<string,9> u : units[sq]) {
+////                for ( string ss : u) {
+////                    cout << ss << " ";
+////                }
+////                cout << endl;
+////            }
+////            cout << endl;
+////        }
+////    }
+    for (auto r : rows) {
+        for (auto c : cols) {
+            sq = rcSquares[r][c];
+            cout << "New Unit Dict: " << RC_r(sq) << RC_c(sq) << " " << endl;
+            for ( int unum = 0 ; unum < 3 ; unum++) {
+                for (i = 0 ; i < 9 ; i++) {
+                    cout << RC_r(rcUnits[r][c][unum][i]) << RC_c(rcUnits[r][c][unum][i])<< " ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+        }
+    }
+////	// make peer dictionary
+//    int pnum = 0;
+//    set<string> peerSet;
+//    for(auto r : rows) {
+//        for (auto c : cols) {
+//            pnum = 0;
+//            peerSet.clear();
+//            sq = squares[r][c];
+//            for(array<string,9> ul : newUnits[r][c]) {
+//                for(string u : ul) {
+//                    if (u != sq) {
+//                        peerSet.insert(u);
+//                    }
+//                }
+//            }
+//            for(string ps : peerSet) {
+//                //peers[sq][pnum] = ps;
+//                peers[r][c][pnum] = ps;
+//                pnum++;
+//            }
+//        }
+//    }
+////    // print peers
+////    cout << endl << "Old Peer dictionary" << endl;
+////    for(auto r : rows) {
+////        for (auto c: cols) {
+////            sq = squares[r][c];
+////            cout << "Old Peer : " << sq << ":" << endl;
+////            for(string p : peers[sq]) {
+////                cout << p << " ";
+////            }
+////            cout << endl;
+////        }
+////    }
+////    cout << endl << endl << "New Peer dictionary" << endl;
+////    for(auto r : rows) {
+////        for (auto c: cols) {
+////            sq = squares[r][c];
+////            cout << "New Peer : " << sq << ":" << endl;
+////            for(string p : newPeers[r][c]) {
+////                cout << p << " ";
+////            }
+////            cout << endl;
+////        }
+////    }
+    }
 
 void Sudoku::clearPuzzle(void) {
-//	for (string s : squares) {
-//		puzzle[s] = ".";
-//		allowableValues[s] = digits;
-//	}
+    for(auto r:rows) {
+        for(auto c:cols) {
+            puzzle[r][c] = ".";
+            allowableValues[r][c] = digitsText;
+        }
+    }
 }
 
-vector<string> Sudoku::crossProduct(string a, string b) {
-	vector<string> v;
-	string s;
-	for (auto aa : a) {
-		for (auto bb : b) {
-			s += aa;
-			s += bb;
-			v.push_back(s);
-			s.clear();
-		}
-	}
-	return v;
-}
+
 
 bool Sudoku::setPuzzle(string p) {
-//	if (p.size() != 81)
-//		return false;
-//	// need to verify only numbers and periods
-//	clearPuzzle();
-//	uint32_t str_index = 0;
-//	for (string s : squares) {
-//		setValue(s, string(1, p[str_index]));
-//		str_index++;
-//	}
+    if(p.size() != 81)
+        return false;
+    clearPuzzle();
+    for(auto r:rows) {
+        for(auto c:cols) {
+            setValue(r,c,string(1,p[r + c*9]));
+        }
+    }
 	return true;
 }
 
@@ -212,15 +284,14 @@ void Sudoku::printPuzzle(void) {
 	uint32_t col_num = -1;
 	uint32_t row_num = -1;
 	string index;
-	for (char r : rows) {
-		cout << r << " " << col_sep;
-		for (char c : cols) {
-			index = string(1, r) + string(1, c);
-			if (puzzle[index] == "0") {
-				cout << "  ";
+	for (auto r : rows) {
+		cout << (char)('A' + r) << " " << col_sep;
+		for (auto c : cols) {
+			if (puzzle[r][c] == "0") {
+				cout << " .";
 			}
 			else {
-				cout << " " << puzzle[index];
+				cout << " " << puzzle[r][c];
 			}
 			if (col_num > 0 && (col_num - 1) % 3 == 0) {
 				cout << " " << col_sep;
@@ -238,8 +309,7 @@ void Sudoku::printPuzzle(void) {
 		else if ((row_num + 1) % 3 == 0) {
 			cout << row_sep << endl;
 		}
-
-	}
+    }
 }
 
 void Sudoku::printAllowableValues(void) {
@@ -253,15 +323,14 @@ void Sudoku::printAllowableValues(void) {
 	uint32_t col_num = -1;
 	uint32_t row_num = -1;
 	string index;
-	for (char r : rows) {
-		cout << r << " " << col_sep;
-		for (char c : cols) {
-			index = string(1, r) + string(1, c);
-			if (puzzle[index] == "0") {
+	for (auto r : rows) {
+		cout << (char)('A' + r) << " " << col_sep;
+		for (auto c : cols) {
+			if (puzzle[r][c] == "0") {
 				cout << "  ";
 			}
 			else {
-				cout << " " << setw(9) << allowableValues[index];
+				cout << " " << setw(9) << allowableValues[r][c];
 			}
 			if (col_num > 0 && (col_num - 1) % 3 == 0) {
 				cout << " " << col_sep;
@@ -291,39 +360,39 @@ void Sudoku::printAllowableValues(string title) {
 /**********************************************************
 **********   Solving Functions ***************************
 ***********************************************************/
-bool Sudoku::setValue(string square, string value) {
-#ifdef TIMING
-	PrecisionTimeLapse ptl;
-	ptl.start();
-#endif 	
-	if (allowableValues[square].find(value) == string::npos)
-		return false;
-	allowableValues[square] = "";
-	puzzle[square] = value;
-	string temp;
-	size_t t;
-	for (string p : peers[square]) {
-		if (square == p) {
-			allowableValues[square] = "";
-		}
-		else { 
-			if (value == ".") {
-				allowableValues[square] = digitsText;
-			}
-			else{
-				temp = allowableValues[p];
-				t = temp.find(value);
-				if (t != string::npos) {
-					temp.replace(t, 1, "");
-					allowableValues[p] = temp;
-				}
-			}
-		}
-	}
-#ifdef TIMING
-	ptl.stop();
-	cout << "setValue," << ptl.elapsedString() << endl;
-#endif
+bool Sudoku::setValue(uint8_t r, uint8_t c, string value) {
+//#ifdef TIMING
+//	PrecisionTimeLapse ptl;
+//	ptl.start();
+//#endif 	
+//	if (allowableValues[r][c].find(value) == string::npos)
+//		return false;
+//	allowableValues[r][c] = "";
+//	puzzle[r][c] = value;
+//	string temp;
+//	size_t t;
+//	for (string p : peers[r][c]) {
+//		if (square == p) {
+//			allowableValues[square] = "";
+//		}
+//		else { 
+//			if (value == ".") {
+//				allowableValues[square] = digitsText;
+//			}
+//			else{
+//				temp = allowableValues[p];
+//				t = temp.find(value);
+//				if (t != string::npos) {
+//					temp.replace(t, 1, "");
+//					allowableValues[p] = temp;
+//				}
+//			}
+//		}
+//	}
+//#ifdef TIMING
+//	ptl.stop();
+//	cout << "setValue," << ptl.elapsedString() << endl;
+//#endif
 	return true;
 }
 
@@ -442,20 +511,20 @@ void Sudoku::unpackPuzzle(string packed) {
 
 bool Sudoku::removeGuess(string square, string value){
 	bool retval = true;
-	string temp = allowableValues[square];
-	if (temp.find(value) == string::npos)
-		retval = false;
-	else {
-		temp = allowableValues[square];
-		size_t t = temp.find(value);
-		if (t != string::npos) {
-			temp.replace(t, 1, "");
-			allowableValues[square] = temp;
-			retval = true;
-		} else {
-			retval = false;
-		}
-	}
+//	string temp = allowableValues[square];
+//	if (temp.find(value) == string::npos)
+//		retval = false;
+//	else {
+//		temp = allowableValues[square];
+//		size_t t = temp.find(value);
+//		if (t != string::npos) {
+//			temp.replace(t, 1, "");
+//			allowableValues[square] = temp;
+//			retval = true;
+//		} else {
+//			retval = false;
+//		}
+//	}
 	return retval;
 }
 
@@ -496,23 +565,23 @@ Guess Sudoku::getGuess() { // returns square, value
 }
 
 bool Sudoku::popGuess() {
-	Guess lastGuess = guessList.back();
-	if (lastGuess.puzzleString.length() == 0 || lastGuess.square.length() == 0 || lastGuess.guess.length() == 0 )
-		return false;
-	else {
-		unpackPuzzle(lastGuess.puzzleString);
-		removeGuess(lastGuess.square, lastGuess.guess);
-		guessList.pop_back();
-	}
+//	Guess lastGuess = guessList.back();
+//	if (lastGuess.puzzleString.length() == 0 || lastGuess.square.length() == 0 || lastGuess.guess.length() == 0 )
+//		return false;
+//	else {
+//		unpackPuzzle(lastGuess.puzzleString);
+//		removeGuess(lastGuess.square, lastGuess.guess);
+//		guessList.pop_back();
+//	}
 	return true;
 }
 
 void Sudoku::pushGuess(Guess const *guess) {
-	Guess g;
-	g.guess = guess->guess;
-	g.square = guess->square;
-	g.puzzleString = string(guess->puzzleString);
-	guessList.push_back(g);
+//	Guess g;
+//	g.guess = guess->guess;
+//	g.square = guess->square;
+//	g.puzzleString = string(guess->puzzleString);
+//	guessList.push_back(g);
 }
 
 void Sudoku::printGuessList() {
@@ -532,40 +601,47 @@ bool Sudoku::solvePuzzle() {
 }
 
 bool Sudoku::startGuessing() {
-	guessList.clear();
-	while(!isPuzzleSolved()) {
-		while (guessesRemain()) {
-			Guess g = getGuess();
-			pushGuess(&g);
-			setValue(g.square, g.guess);
-			solveOnes();
-			if (isPuzzleSolved() == false && guessesRemain() == false) {
-				popGuess();
-			}
-		}
-		if (isPuzzleSolved() == false) {
-			if (guessList.size() == 0) {
-			}
-			if(popGuess() == false) {
-				return false;
-			}
-		}
-			
-	}
+//	guessList.clear();
+//	while(!isPuzzleSolved()) {
+//		while (guessesRemain()) {
+//			Guess g = getGuess();
+//			pushGuess(&g);
+//			setValue(g.square, g.guess);
+//			solveOnes();
+//			if (isPuzzleSolved() == false && guessesRemain() == false) {
+//				popGuess();
+//			}
+//		}
+//		if (isPuzzleSolved() == false) {
+//			if (guessList.size() == 0) {
+//			}
+//			if(popGuess() == false) {
+//				return false;
+//			}
+//		}
+//			
+//	}
 	return isPuzzleSolved();
 }
 
 string Sudoku::RCToString(ROWCOL rc) {
-    string retval;
-    retval += (char)('A' + RC_r(rc));
-    retval += (char)('1' + RC_c(rc));
+    static string retval = "";
+    retval = "";
+//    retval += (char)RC_r(rc);
+//    retval += "_";
+//    retval += (char)RC_c(rc);
+    retval += (char)RC_r(rc);
+     retval += (char)RC_c(rc);
+    
+//    retval += (char)('A' + (uint8_t)RC_r(rc));
+//    retval += (char)('1' + (uint8_t)RC_c(rc));
     return retval;
 }
 
-ROWCOL Sudoku::stringToRC(string rct) {
-    const char* pstr = rct.c_str();
-    return make_tuple((uint8_t)(pstr[0] - 'A'),(char)atoi(&pstr[1]) - 1);
-}
+//ROWCOL Sudoku::stringToRC(string rct) {
+//    const char* pstr = rct.c_str();
+//    return make_tuple((uint8_t)(pstr[0] - 'A'),(char)atoi(&pstr[1]) - 1);
+//}
 
  void Sudoku::test(void) {
 

@@ -18,19 +18,9 @@ string easy506 = ".43.8.25.6.............1.949....4.7....6.8....1.2....382.5....
 #ifdef SHORTMAIN
 int main() {
     Sudoku s;
-    ROWCOL rc;
-    array<array<ROWCOL ,9> ,9> rcarray;
-    
-    rc = make_tuple(1,2);
-    cout << Sudoku::RCToString(rc) << endl;
-    rc = make_tuple(4,5);
-    cout << Sudoku::RCToString(rc) << endl;
-    rc = Sudoku::stringToRC("A1");
-    cout << Sudoku::RCToString(rc) << endl;
-    rc = Sudoku::stringToRC("I9");
-    cout << Sudoku::RCToString(rc) << endl;
-    rc = Sudoku::stringToRC("I9");
-    cout << Sudoku::RCToString(rc) << endl;
+
+    //s.printPuzzle();
+    //s.printAllowableValues();
 }
 
 #else
@@ -51,6 +41,7 @@ int main()
 	double sumTime =  0.0;
 	double time;
 	total.start();
+    malloc
 	for (uint32_t i = 0; i < pf.getNumberOfPuzzles(); i++) {
 #ifdef PRINTING
         cout << i+1 << " ";

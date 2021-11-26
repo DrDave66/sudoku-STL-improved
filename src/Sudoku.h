@@ -31,9 +31,13 @@ public:
 	void clearPuzzle();
 	void createVectors(void);
 	vector<string> crossProduct(string a, string b);
-
+	vector<ROWCOL> crossProductRC (string a, string b);
+    
 	bool setPuzzle(string p);
-	bool setValue(string square, string value);
+	//bool setValue(string square, string value);
+    bool setValue(uint8_t row, uint8_t col, string value);
+    bool setValue(ROWCOL rc, string value);
+    
 	void printPuzzle(void);
 	void printPuzzle(string title);
 	void printAllowableValues(void);
@@ -66,22 +70,25 @@ public:
     array<uint32_t, 9> cols = {0,1,2,3,4,5,6,7,8};
     
 	string digitsText = "123456789";
-	string rowsText = "ABCDEFGHI";
-	string colsText = "123456789";
+	string rowsText = "012345678";
+	string colsText = "012345678";
     
-    array<array<string, numRows> ,numCols> squares;
-    array<array<string, 9>, 27> unitlist;
+
+    array<array<ROWCOL, numRows> , numCols> rcSquares;
+
+    array<array<ROWCOL, 9>, 27> rcUnitList;
     
-    array<array<array<array<string, 9> ,3 > ,9> ,9> newUnits;
-	
-    map<string, vector<vector<string> > > units; // square, squares in unit
-	
-    map<string, vector<string> > peers; // square, squares in peers
+
+    array<array<array<array<ROWCOL, 9> ,3 > ,9> ,9> rcUnits;
+    
+    array<array<array<string, 20> ,9> ,9> peers;
     set<string> digitSet = { "1","2","3","4","5","6","7","8","9" };
     
-   	map<string, string> puzzle; // unit, value
-	map<string, string> allowableValues; // square, string of allowable values
-	vector<Guess> guessList; // ordered list of guesses
+    array<array<string, 9> ,9> puzzle;
+    array<array<string, 9> ,9> allowableValues;
+	array<Guess, 81> guessList; // ordered list of guesses
+    uint8_t guessNumber;
+    
 	Guess newGuess;
 };
 

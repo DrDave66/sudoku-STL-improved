@@ -7,7 +7,7 @@
 
 using namespace std;
 
-typedef tuple<uint32_t, uint32_t> ROWCOL;
+typedef tuple<uint8_t, uint8_t> ROWCOL;
 
 //struct SQUARE {
 //	string name = "AB";
