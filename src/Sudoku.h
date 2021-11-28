@@ -32,10 +32,11 @@ public:
 	void createVectors(void);
 	vector<string> crossProduct(string a, string b);
 	vector<ROWCOL> crossProductRC (string a, string b);
+    vector<ROWCOL> crossProductRC(vector<int16_t>, vector<int16_t>);
     
 	bool setPuzzle(string p);
 	//bool setValue(string square, string value);
-    bool setValue(uint8_t row, uint8_t col, string value);
+    bool setValue(int16_t row, int16_t col, string value);
     bool setValue(ROWCOL rc, string value);
     
 	void printPuzzle(void);
@@ -66,12 +67,12 @@ public:
     
     static const uint32_t numRows = 9;
     static const uint32_t numCols = 9;
-    array<uint32_t, 9> rows = {0,1,2,3,4,5,6,7,8};
-    array<uint32_t, 9> cols = {0,1,2,3,4,5,6,7,8};
+    vector<int16_t> rows = {0,1,2,3,4,5,6,7,8};
+    vector<int16_t> cols = {0,1,2,3,4,5,6,7,8};
     
 	string digitsText = "123456789";
-	string rowsText = "012345678";
-	string colsText = "012345678";
+//	string rowsText = "012345678";
+//	string colsText = "012345678";
     
 
     array<array<ROWCOL, numRows> , numCols> rcSquares;
@@ -81,7 +82,7 @@ public:
 
     array<array<array<array<ROWCOL, 9> ,3 > ,9> ,9> rcUnits;
     
-    array<array<array<string, 20> ,9> ,9> peers;
+    array<array<array<ROWCOL, 20> ,9> ,9> rcPeers;
     set<string> digitSet = { "1","2","3","4","5","6","7","8","9" };
     
     array<array<string, 9> ,9> puzzle;

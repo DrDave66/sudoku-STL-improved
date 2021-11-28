@@ -2,12 +2,14 @@
 #ifndef _SUDOKUTYPES_H
 #define _SUDOKUTYPES_H
 
+#include <cstdint>
 #include <array>
 #include <tuple>
 
+
 using namespace std;
 
-typedef tuple<uint8_t, uint8_t> ROWCOL;
+typedef tuple<int16_t, int16_t> ROWCOL;
 
 //struct SQUARE {
 //	string name = "AB";
