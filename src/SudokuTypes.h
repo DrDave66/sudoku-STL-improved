@@ -7,9 +7,9 @@
 #include <tuple>
 
 
-using namespace std;
+//using namespace std;
 
-typedef tuple<int16_t, int16_t> ROWCOL;
+//typedef tuple<int16_t, int16_t> ROWCOL;
 
 //struct SQUARE {
 //	string name = "AB";

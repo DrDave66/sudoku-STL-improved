@@ -5,13 +5,14 @@
 #include <string>
 #include <cstring>
 using namespace std;
+#include "RowCol.h"
 
 class Sudoku;
 
 class Guess
 {
 public:
-	Guess(string _puzzleString, string _square, string _guess);
+	Guess(string _puzzleString, RowCol _square, string _guess);
 	Guess(Sudoku* s, string _square, string _guess);
     Guess();
 	Guess(const Guess&);
@@ -20,7 +21,7 @@ public:
 
 
 	string puzzleString;
-	string square;
+	RowCol square;
 	string guess;
 };
 

@@ -1,6 +1,6 @@
 #include "Guess.h"
 
-Guess::Guess(string _puzzleString, string _square, string _guess) {
+Guess::Guess(string _puzzleString, RowCol _square, string _guess) {
 	puzzleString = _puzzleString;
 	square = _square;
 	guess = _guess;
@@ -8,7 +8,7 @@ Guess::Guess(string _puzzleString, string _square, string _guess) {
 
 Guess::Guess() {
 	puzzleString = "";
-	square = "";
+	square = RowCol();
 	guess = "";
 }
 Guess::Guess(const Guess& g) {
@@ -26,7 +26,7 @@ Guess& Guess::operator=(const Guess& cpy) {
 
 string Guess::toString() {
 	char ss[1000];
-	sprintf(ss,"Square: %s, Guess: %s, Puzzle Text: %s\n",square.c_str(), guess.c_str(), puzzleString.c_str());
+	sprintf(ss,"Square: %s, Guess: %s, Puzzle Text: %s\n",square.toString().c_str(), guess.c_str(), puzzleString.c_str());
 	string retval(ss);
 	return retval;
 }

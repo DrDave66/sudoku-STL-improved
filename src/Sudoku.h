@@ -16,9 +16,11 @@
 #include <ctime>
 
 using namespace std;
+
 #include "Guess.h"
 #include "PrecisionTimeLapse.h"
-#include "sudokuTypes.h"
+#include "SudokuTypes.h"
+#include "RowCol.h"
 
 #define RC_r(x) (get<0>(x))
 #define RC_c(x) (get<1>(x))
@@ -26,18 +28,18 @@ using namespace std;
 class Sudoku
 {
 public:
-	Sudoku();
+    Sudoku();
 	Sudoku(string puzzle);
 	void clearPuzzle();
 	void createVectors(void);
 	vector<string> crossProduct(string a, string b);
-	vector<ROWCOL> crossProductRC (string a, string b);
-    vector<ROWCOL> crossProductRC(vector<int16_t>, vector<int16_t>);
+	vector<RowCol> crossProductRC (string a, string b);
+    vector<RowCol> crossProductRC(vector<int16_t>, vector<int16_t>);
     
 	bool setPuzzle(string p);
 	//bool setValue(string square, string value);
     bool setValue(int16_t row, int16_t col, string value);
-    bool setValue(ROWCOL rc, string value);
+    bool setValue(RowCol rc, string value);
     
 	void printPuzzle(void);
 	void printPuzzle(string title);
@@ -52,18 +54,16 @@ public:
 	string getAllowableGuessesText(void);
 	string getPackedPuzzle(void);
 	void unpackPuzzle(string);
-	bool removeGuess(string, string);
+	bool removeGuess(RowCol, string);
 	bool guessesRemain(void);
 	Guess getGuess();
 	bool popGuess();
-	void pushGuess(Guess const*);
+	void pushGuess(const Guess);
 	bool solvePuzzle();
 	bool startGuessing();
 	void printGuessList();
 	void test();
 //private:
-    static string RCToString(ROWCOL);
-    static ROWCOL stringToRC(string);
     
     static const uint32_t numRows = 9;
     static const uint32_t numCols = 9;
@@ -73,24 +73,19 @@ public:
 	string digitsText = "123456789";
 //	string rowsText = "012345678";
 //	string colsText = "012345678";
-    
+    void printPeers(RowCol rc);
 
-    array<array<ROWCOL, numRows> , numCols> rcSquares;
+    //array<array<RowCol, numRows> , numCols> rcSquares;
+    array<array<RowCol, 9> ,27> rcUnitList;
+    array<array<array<array<RowCol, 9> ,3 > ,9> ,9> rcUnits;
+    array<array<array<RowCol, 20> ,9> ,9> rcPeers;
 
-    array<array<ROWCOL, 9>, 27> rcUnitList;
-    
-
-    array<array<array<array<ROWCOL, 9> ,3 > ,9> ,9> rcUnits;
-    
-    array<array<array<ROWCOL, 20> ,9> ,9> rcPeers;
     set<string> digitSet = { "1","2","3","4","5","6","7","8","9" };
-    
     array<array<string, 9> ,9> puzzle;
     array<array<string, 9> ,9> allowableValues;
 	array<Guess, 81> guessList; // ordered list of guesses
     uint8_t guessNumber;
     
-	Guess newGuess;
 };
 
 #endif // _SUDOKU

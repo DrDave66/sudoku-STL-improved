@@ -5,6 +5,7 @@
 #include "Sudoku.h"
 #include "PrecisionTimeLapse.h"
 #include "SudokuTypes.h"
+#include "RowCol.h"
 // solved with ones/peers
 string grid1 =   "..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..";
 string grid3 =   "8.2.5.7.1..7.8246..1.9.....6....18325.......91843....6.....4.2..9561.3..3.8.9.6.7";
@@ -23,13 +24,15 @@ string solved4 = "15248367969715234843897625131476589286924173527539816478652491
 
 #ifdef SHORTMAIN
 int main() {
-    Sudoku s(solved1);
+    Sudoku s(grid2);
 
     s.printPuzzle();
     s.printAllowableValues();
-    s.solveOnes();
+    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
+    s.solvePuzzle();
     s.printPuzzle();
     s.printAllowableValues();
+    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
 }
 
 #else
