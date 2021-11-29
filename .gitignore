@@ -1,3 +1,11 @@
+# windows files
+.vs/**
+x64/**
+sudoku-STL-improved.sln
+sudoku-STL-improved.vcxproj
+sudoku-STL-improved.vcxproj.filters
+sudoku-STL-improved.vcxproj.user
+
 # resource files
 src/python variables.txt
 
