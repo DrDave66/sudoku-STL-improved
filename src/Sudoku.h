@@ -33,7 +33,6 @@ public:
 	void clearPuzzle();
 	void createVectors(void);
 	vector<string> crossProduct(string a, string b);
-	vector<RowCol> crossProductRC (string a, string b);
     vector<RowCol> crossProductRC(vector<int16_t>, vector<int16_t>);
     
 	bool setPuzzle(string p);
@@ -73,7 +72,6 @@ public:
 	string digitsText = "123456789";
 //	string rowsText = "012345678";
 //	string colsText = "012345678";
-    void printPeers(RowCol rc);
 
     //array<array<RowCol, numRows> , numCols> rcSquares;
     array<array<RowCol, 9> ,27> rcUnitList;
@@ -81,11 +79,13 @@ public:
     array<array<array<RowCol, 20> ,9> ,9> rcPeers;
 
     set<string> digitSet = { "1","2","3","4","5","6","7","8","9" };
+	char digits[10] = "123456789";
     SUDOKUTYPE puzzle;
     SUDOKUTYPE allowableValues;
 	array<Guess, 81> guessList; // ordered list of guesses
     uint16_t guessNumber;
     Guess newGuess;
+
 };
 
 #endif // _SUDOKU

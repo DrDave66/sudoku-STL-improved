@@ -22,14 +22,13 @@ public:
 
     RowCol& operator=(const RowCol cpy);
 
-    inline uint16_t r() { return row; };
-    inline uint16_t c() { return col; };
+    //inline uint16_t r() { return row; };
+    //inline uint16_t c() { return col; };
     void set(int16_t r, int16_t c);
     string toString();
     friend ostream& operator<< (ostream& stream, const RowCol&);
-//    inline bool operator == (const RowCol& rhs) { return (rhs.row == row && rhs.col == col);}
-//    inline bool operator != (const RowCol& rhs) { return (rhs.row != row && rhs.col != col);}
 
+public:
     int16_t row;
     int16_t col;
 };

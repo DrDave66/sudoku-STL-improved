@@ -42,20 +42,21 @@ int main()
 {
 
 	Puzzles p;
-	Puzzles pf("../sudoku-puzzles/10000 P.txt");
-	cout << pf.getNumberOfPuzzles() << " puzzles loaded" << endl;
+	Puzzles pf("../sudoku-puzzles/1MP.txt");
+	cout << pf.getNumberOfPuzzles() << " puzzles loaded" << endl << endl << endl;
 	if (pf.getNumberOfPuzzles() == 0)
 		return 1;
 	Sudoku s;
 	PrecisionTimeLapse total;
 	PrecisionTimeLapse ptl;
+	uint32_t numPuzzles = pf.getNumberOfPuzzles();
 	int solved = 0;
 	double minTime = 100000.0;
 	double maxTime = 0.0;
 	double sumTime =  0.0;
 	double time;
 	total.start();
-
+	uint16_t halfPercent = (uint16_t)(pf.getNumberOfPuzzles()*0.005);
 	for (uint32_t i = 0; i < pf.getNumberOfPuzzles(); i++) {
 #ifdef PRINTING
         cout << i+1 << " ";
@@ -84,9 +85,10 @@ int main()
 		sumTime += time;
 		//cout << time << " " << sumTime << "  ";
 		//cout << "Total time: " << ptl.elapsedString() << " solved " << solved << " out of " << i+1 << endl;
-        if(i % 1000 == 0)
-            cout << i << endl;
-		
+		if (i % 100 == 0) {
+			printf("%6.2f%%   \r", (double)i/(double)numPuzzles * 100);
+			
+		}
 	}
 	total.stop();
     //cout << " Total time: " << total.elapsed() << " seconds" << endl;

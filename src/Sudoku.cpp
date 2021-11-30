@@ -188,7 +188,7 @@ bool Sudoku::setPuzzle(string p) {
     clearPuzzle();
     for(auto r:rows) {
         for(auto c:cols) {
-            RowCol rc(r,c);
+            //RowCol rc(r,c);
             setValue(r,c,string(1,p[c+ r*9]));
         }
     }
@@ -320,6 +320,40 @@ void Sudoku::printAllowableValues(string title) {
 /**********************************************************
 **********   Solving Functions ***************************
 ***********************************************************/
+
+
+//uint32_t Sudoku::countOccurrences(char* str, char ch) {
+//	uint32_t count = 0;
+//	uint32_t i = 0;
+//	while (str[i] != '\0')
+//	{
+//		if (str[i] == ch)
+//		{
+//			count++;
+//		}
+//		i++;
+//	}
+//	return count;
+//
+//}
+//
+//void Sudoku::removeChar(char* str, char ch) {
+//	uint32_t i, j;
+//	size_t len = strlen(str);
+//	for (i = 0; i < len; i++)
+//	{
+//		if (str[i] == ch)
+//		{
+//			for (j = i; j < len; j++)
+//			{
+//				str[j] = str[j + 1];
+//			}
+//			len--;
+//			i--;
+//		}
+//	}
+//}
+
 bool Sudoku::setValue(int16_t r, int16_t c, string value) {
 #ifdef TIMING
 	PrecisionTimeLapse ptl;
@@ -327,11 +361,7 @@ bool Sudoku::setValue(int16_t r, int16_t c, string value) {
 #endif 	
     size_t t;
     int16_t rr,cc;
-    RowCol rc(r, c);
-//   cout << "SVI  " << r << " " << c << " " << value << endl;
- //   cout << "SVRC " << rc << " " << value << endl;
     if (value == "." || value == "0") {
-        //allowableValues[r][c] = digitsText;
         puzzle[r][c] = value;
         return true;
     } else {
@@ -340,18 +370,14 @@ bool Sudoku::setValue(int16_t r, int16_t c, string value) {
         allowableValues[r][c] = "";
         puzzle[r][c] = value;
     }
-	string temp;
 
 	for (RowCol p : rcPeers[r][c]) {
-        rr = p.r();
-        cc = p.c();
-        
-        temp = allowableValues[rr][cc];
-        t = temp.find(value);
-		if (t != string::npos) {
-			temp.replace(t, 1, "");
-            allowableValues[rr][cc] = temp;
-		}
+        rr = p.row;
+        cc = p.col;
+        t = allowableValues[rr][cc].find(value);
+		if (t != string::npos)
+			allowableValues[rr][cc].replace(t, 1, "");
+  
     }
 
 #ifdef TIMING
@@ -362,7 +388,7 @@ bool Sudoku::setValue(int16_t r, int16_t c, string value) {
 }
 
 bool Sudoku::setValue(RowCol rc, string value) {
-    return setValue(rc.r(), rc.c(), value);
+    return setValue(rc.row, rc.col, value);
     return true;
 }
 
@@ -387,19 +413,19 @@ bool Sudoku::solveOnes(void) {
                 }
             }
         }
-        // look through all units and see if any value appears only one time
 
+		// look through all units and see if any value appears only one time
         for(array<RowCol,9> ul : rcUnitList) {
             string allValues = "";
 			for (RowCol rc : ul) {
-                allValues += allowableValues[rc.r()][rc.c()];
+                allValues += allowableValues[rc.row][rc.col];
 			}
 			for (char d : digitsText) {
 				// if number appears once
 				if (count(allValues.begin(), allValues.end(), d) == 1) {
 					// find the square with the value in it
 					for (RowCol u : ul) {
-						if (count(allowableValues[u.r()][u.c()].begin(), allowableValues[u.r()][u.c()].end(), d) == 1) {
+						if (count(allowableValues[u.row][u.col].begin(), allowableValues[u.row][u.col].end(), d) == 1) {
 							solvedSome = true;
 							setValue(u, string(1, d));
                           break;
@@ -418,15 +444,30 @@ bool Sudoku::solveOnes(void) {
 
 bool Sudoku::isPuzzleSolved(void) {
 //	// a puzzle is solved if each unit in unitlist contains values of 1-9
-	set<string> unitSet;
-	for (array<RowCol,9> ul : rcUnitList) {
-		unitSet.clear();
-        for(RowCol rc:ul) {
-            unitSet.insert(puzzle[rc.r()][rc.c()]);
-        }
-        if (unitSet != digitSet)
-            return false;
+	char str[10];
+	str[9] = '\0';
+	uint8_t i;
+	for (array<RowCol, 9> ul : rcUnitList) {
+		i = 0;
+		for (RowCol rc : ul) {
+			str[i] = puzzle[ul[i].row][ul[i].col][0];
+			i++;
+		}
+		str[i] = '\0';
+		for (uint8_t j = 0; j < 9; j++) {
+			if (strchr(str, digits[i]) == NULL)
+				return false;
+		}
 	}
+	//set<string> unitSet;
+	//for (array<RowCol,9> ul : rcUnitList) {
+	//	unitSet.clear();
+ //       for(RowCol rc:ul) {
+ //           unitSet.insert(puzzle[rc.r()][rc.c()]);
+ //       }
+ //       if (unitSet != digitSet)
+ //           return false;
+	//}
     return true;
 }
 
@@ -491,8 +532,8 @@ void Sudoku::unpackPuzzle(string packed) {
 
 bool Sudoku::removeGuess(RowCol rc, string value){
 	bool retval = true;
-    int16_t r=rc.r();
-    int16_t c=rc.c();
+    int16_t r=rc.row;
+    int16_t c=rc.col;
 	string temp = allowableValues[r][c];
 	if (temp.find(value) == string::npos)
 		retval = false;
@@ -546,7 +587,7 @@ Guess Sudoku::getGuess() { // returns square, value
     }
 	// select random vector
 	RowCol square = subset[rand() % subset.size()];
-    string temp = allowableValues[square.r()][square.c()];
+    string temp = allowableValues[square.row][square.col];
 	char t = temp[rand() % temp.length()];
 	//newGuess = Guess(square, string(1,t), puzzle, allowableValues);
 	return Guess(square, string(1,t), puzzle, allowableValues);;
@@ -629,17 +670,3 @@ bool Sudoku::startGuessing() {
 void Sudoku::test(void) {
 
  }
-
-void Sudoku::printPeers(RowCol rc) {
-    set<RowCol> src;
-    for(RowCol p : rcPeers[rc.r()][rc.c()]) {
-        src.insert(p);
-    }
-    
-    cout << "Peers (" << rc << "): ";
-    for(RowCol p : src) {
-        cout << p << " ";
-    }
-    cout << endl;
-    
-}
