@@ -1,10 +1,10 @@
 #pragma once
-#ifndef PRECISIONTIMELAPSE_H
-#define PRECISIONTIMELAPSE_H
+#ifndef _PRECISIONTIMELAPSE
+#define _PRECISIONTIMELAPSE
 
 #include <chrono>
 #include <string>
-#include <ratio>
+
 using namespace std;
 using namespace std::chrono; 
 

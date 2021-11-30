@@ -13,7 +13,7 @@ class Sudoku;
 class Guess
 {
 public:
-	Guess(RowCol _square, string _guess,SUDOKUTYPE _puzzle, SUDOKUTYPE _allowableValues);
+	Guess(RowCol _square, string _guess, SUDOKUTYPE _puzzle, SUDOKUTYPE _allowableValues);
 
     Guess();
 	Guess(const Guess&);

@@ -98,6 +98,9 @@ int main()
 }
 
 #endif
+// 1MP uint8_t			Min time: 0.0136 ms, Max time: 0.3281 ms, Average Time: 0.0186772 ms, Total: 40.359589 sec
+// 1MP better STL		Min time: 0.0141 ms, Max time: 0.8683 ms, Average Time: 0.0199026 ms, Total: 42.661107 sec WORK
+//10k no map			Min time: 0.0149 ms, Max time: 0.2179 ms, Average Time: 0.0208094 ms, Total: 0.448435 sec WORK
 // 10k no map           Min time: 0.055056 ms, Max time: 6.6815 ms, Average Time: 0.0721173 ms, Total: 1.380305 sec
 // time for 10000P.txt -Min time: 0.2968 ms, Max time: 1.1741 ms, Average Time: 0.468564 ms, Total: 8.292689 sec
 // for 5000P.txt -      Min time: 0.3026 ms, Max time: 1.0865 ms, Average Time: 0.466454 ms, Total: 4.142156 sec

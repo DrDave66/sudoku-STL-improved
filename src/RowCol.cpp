@@ -5,21 +5,14 @@
 //  Created by Dave Landis on 11/28/21.
 //  Copyright © 2021 Dave Landis. All rights reserved.
 //
-#include <algorithm>
-#include <utility>
+//#include <utility>
 #include <iostream>
-
 
 using namespace std;
 
 #include "RowCol.h"
 
-//RowCol::RowCol() {
-//    row=INT16_MAX;
-//    col=INT16_MAX;
-//}
-
-RowCol::RowCol(int16_t r, int16_t c) {
+RowCol::RowCol(uint8_t r, uint8_t c) {
     row = r;
     col = c;
 }
@@ -37,7 +30,7 @@ RowCol& RowCol::operator=(RowCol cpy) {
     return *this;    // our (old) resources get destroyed with cpyb
 }
 
-void RowCol::set(int16_t r, int16_t c) {
+void RowCol::set(uint8_t r, uint8_t c) {
     row = r;
     col = c;
 }

@@ -2,11 +2,12 @@
 #ifndef _PUZZLES
 #define _PUZZLES
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <iostream>
 #include <vector>
 #include <fstream>
+
 using namespace std;
 
 class Puzzles

@@ -22,9 +22,6 @@ using namespace std;
 #include "SudokuTypes.h"
 #include "RowCol.h"
 
-#define RC_r(x) (get<0>(x))
-#define RC_c(x) (get<1>(x))
-
 class Sudoku
 {
 public:
@@ -33,11 +30,11 @@ public:
 	void clearPuzzle();
 	void createVectors(void);
 	vector<string> crossProduct(string a, string b);
-    vector<RowCol> crossProductRC(vector<int16_t>, vector<int16_t>);
+    vector<RowCol> crossProductRC(vector<uint8_t>, vector<uint8_t>);
     
 	bool setPuzzle(string p);
 	//bool setValue(string square, string value);
-    bool setValue(int16_t row, int16_t col, string value);
+    bool setValue(uint8_t row, uint8_t col, string value);
     bool setValue(RowCol rc, string value);
     
 	void printPuzzle(void);
@@ -45,9 +42,7 @@ public:
 	void printAllowableValues(void);
 	void printAllowableValues(string title);
 	bool solveOnes(void);
-	string printableStringVector(vector<string> vec);
-	string printableVectorVectorString(vector<vector<string> >);
-	string printableStringSet(set<string> st);
+
 	bool isPuzzleSolved(void); 
 	string getPuzzleText(void);
 	string getAllowableGuessesText(void);
@@ -64,16 +59,13 @@ public:
 	void test();
 //private:
     
-    static const uint32_t numRows = 9;
-    static const uint32_t numCols = 9;
-    vector<int16_t> rows = {0,1,2,3,4,5,6,7,8};
-    vector<int16_t> cols = {0,1,2,3,4,5,6,7,8};
+    static const uint8_t numRows = 9;
+    static const uint8_t numCols = 9;
+    vector<uint8_t> rows = {0,1,2,3,4,5,6,7,8};
+    vector<uint8_t> cols = {0,1,2,3,4,5,6,7,8};
     
 	string digitsText = "123456789";
-//	string rowsText = "012345678";
-//	string colsText = "012345678";
 
-    //array<array<RowCol, numRows> , numCols> rcSquares;
     array<array<RowCol, 9> ,27> rcUnitList;
     array<array<array<array<RowCol, 9> ,3 > ,9> ,9> rcUnits;
     array<array<array<RowCol, 20> ,9> ,9> rcPeers;
@@ -83,7 +75,7 @@ public:
     SUDOKUTYPE puzzle;
     SUDOKUTYPE allowableValues;
 	array<Guess, 81> guessList; // ordered list of guesses
-    uint16_t guessNumber;
+	uint8_t guessNumber;
     Guess newGuess;
 
 };
