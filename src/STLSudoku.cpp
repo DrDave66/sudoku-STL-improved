@@ -6,6 +6,7 @@
 #include "PrecisionTimeLapse.h"
 #include "SudokuTypes.h"
 #include "RowCol.h"
+#include "Guess.h"
 // solved with ones/peers
 string grid1 =   "..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..";
 string grid3 =   "8.2.5.7.1..7.8246..1.9.....6....18325.......91843....6.....4.2..9561.3..3.8.9.6.7";
@@ -22,17 +23,18 @@ string solved3 = "52384691796153742848721965315469378263247819579815234687932456
 string solved4 = "152483679697152348438976251314765892869241735275398164786524913941837526523619487";
 #define SHORTMAIN
 
-#ifdef SHORTMAIN
+#ifdef noSHORTMAIN
 int main() {
-    Sudoku s(grid2);
-
+    Sudoku s(easy505);
+    array<array<string, 9> ,9> puzzle;
+    array<array<string, 9> ,9> allowableValues;
     s.printPuzzle();
     s.printAllowableValues();
+
     cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
     s.solvePuzzle();
-    s.printPuzzle();
-    s.printAllowableValues();
     cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
+    s.printPuzzle();
 }
 
 #else
@@ -40,7 +42,7 @@ int main()
 {
 
 	Puzzles p;
-	Puzzles pf("../sudoku-puzzles/1000P.txt");
+	Puzzles pf("../sudoku-puzzles/10000 P.txt");
 	cout << pf.getNumberOfPuzzles() << " puzzles loaded" << endl;
 	if (pf.getNumberOfPuzzles() == 0)
 		return 1;
@@ -53,7 +55,7 @@ int main()
 	double sumTime =  0.0;
 	double time;
 	total.start();
-    malloc
+
 	for (uint32_t i = 0; i < pf.getNumberOfPuzzles(); i++) {
 #ifdef PRINTING
         cout << i+1 << " ";
@@ -94,9 +96,9 @@ int main()
 }
 
 #endif
-
-// time for 10000P.txt - Min time: 0.2968 ms, Max time: 1.1741 ms, Average Time: 0.468564 ms, Total: 8.292689 sec
-// for 5000P.txt -       Min time: 0.3026 ms, Max time: 1.0865 ms, Average Time: 0.466454 ms, Total: 4.142156 sec
+// 10k no map           Min time: 0.055056 ms, Max time: 6.6815 ms, Average Time: 0.0721173 ms, Total: 1.380305 sec
+// time for 10000P.txt -Min time: 0.2968 ms, Max time: 1.1741 ms, Average Time: 0.468564 ms, Total: 8.292689 sec
+// for 5000P.txt -      Min time: 0.3026 ms, Max time: 1.0865 ms, Average Time: 0.466454 ms, Total: 4.142156 sec
 
 // mac release
 //blank constructor

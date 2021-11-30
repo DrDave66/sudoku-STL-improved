@@ -36,7 +36,7 @@ vector<RowCol> Sudoku::crossProductRC(vector<int16_t> a, vector<int16_t> b) {
 
 void Sudoku::createVectors(void) {
 //	// create vector of squares
-#define PRINTVECTORS
+#define noPRINTVECTORS
     
     uint32_t i;
     vector<RowCol> rcv;
@@ -162,20 +162,18 @@ void Sudoku::createVectors(void) {
             }
         }
     }
+
+#ifdef PRINTVECTORS
     for (auto r:rows) {
         for(auto c:cols) {
             sq.set(r,c);
             printPeers(sq);
         }
     }
-#ifdef PRINTVECTORS
-
 #endif
 }
 
 void Sudoku::clearPuzzle(void) {
-    printPuzzle();
-    printAllowableValues();
     for(auto r:rows) {
         for(auto c:cols) {
             puzzle[r][c] = ".";
@@ -523,7 +521,6 @@ bool Sudoku::guessesRemain(void) {
 }
 
 Guess Sudoku::getGuess() { // returns square, value
-    static Guess newGuess;
 	// guess is returned as square,value in an array
 	uint32_t minCount = 9;
 	// iterate through squares and get lowest count > 1
@@ -551,31 +548,24 @@ Guess Sudoku::getGuess() { // returns square, value
 	RowCol square = subset[rand() % subset.size()];
     string temp = allowableValues[square.r()][square.c()];
 	char t = temp[rand() % temp.length()];
-	string pt = getPackedPuzzle();
-	newGuess = Guess(pt, square, string(1,t));
-	return Guess();
+	//newGuess = Guess(square, string(1,t), puzzle, allowableValues);
+	return Guess(square, string(1,t), puzzle, allowableValues);;
 }
 
 bool Sudoku::popGuess() {
     if(guessNumber == 0)
         return false;
-	Guess lastGuess = guessList[guessNumber];
-//	if (lastGuess.puzzleString.length() == 0 || lastGuess.guess.length() == 0 )
-//		return false;
-//	else {
-    unpackPuzzle(lastGuess.puzzleString);
-    removeGuess(lastGuess.square, lastGuess.guess);
     guessNumber--;
-//	}
+    Guess lastGuess;
+    lastGuess = guessList[guessNumber];
+    puzzle = lastGuess.puzzle;
+    allowableValues = lastGuess.allowableValues;
+    removeGuess(lastGuess.square, lastGuess.guess);
 	return true;
 }
 
 void Sudoku::pushGuess(const Guess guess) {
-	Guess g;
-	g.guess = guess.guess;
-	g.square = guess.square;
-	g.puzzleString = guess.puzzleString;
-	guessList[guessNumber] = g;
+	guessList[guessNumber] = guess;
     guessNumber++;
 }
 

@@ -81,11 +81,11 @@ public:
     array<array<array<RowCol, 20> ,9> ,9> rcPeers;
 
     set<string> digitSet = { "1","2","3","4","5","6","7","8","9" };
-    array<array<string, 9> ,9> puzzle;
-    array<array<string, 9> ,9> allowableValues;
+    SUDOKUTYPE puzzle;
+    SUDOKUTYPE allowableValues;
 	array<Guess, 81> guessList; // ordered list of guesses
-    uint8_t guessNumber;
-    
+    uint16_t guessNumber;
+    Guess newGuess;
 };
 
 #endif // _SUDOKU

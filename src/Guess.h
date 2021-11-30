@@ -6,21 +6,23 @@
 #include <cstring>
 using namespace std;
 #include "RowCol.h"
+#include "SudokuTypes.h"
 
 class Sudoku;
 
 class Guess
 {
 public:
-	Guess(string _puzzleString, RowCol _square, string _guess);
-	Guess(Sudoku* s, string _square, string _guess);
+	Guess(RowCol _square, string _guess,SUDOKUTYPE _puzzle, SUDOKUTYPE _allowableValues);
+
     Guess();
 	Guess(const Guess&);
 	Guess& operator=(const Guess& cpy) ;
 	string toString();
 
 
-	string puzzleString;
+    SUDOKUTYPE puzzle;
+    SUDOKUTYPE allowableValues;
 	RowCol square;
 	string guess;
 };

@@ -10,7 +10,7 @@
 //using namespace std;
 
 //typedef tuple<int16_t, int16_t> ROWCOL;
-
+typedef array<array<string, 9> ,9> SUDOKUTYPE;
 //struct SQUARE {
 //	string name = "AB";
 //	char value;
