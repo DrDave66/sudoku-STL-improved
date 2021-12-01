@@ -182,7 +182,7 @@ bool Sudoku::setPuzzle(string p) {
     for(auto r:rows) {
         for(auto c:cols) {
             //RowCol rc(r,c);
-            setValue(r,c,string(1,p[c+ r*9]));
+            setValue(r,c,p[c+ r*9]);
         }
     }
 	return true;
@@ -314,18 +314,18 @@ void Sudoku::printAllowableValues(string title) {
  **********   Solving Functions ***************************
 ***********************************************************/
 
-bool Sudoku::setValue(uint8_t r, uint8_t c, string value) {
+bool Sudoku::setValue(uint8_t r, uint8_t c, char value) {
 #ifdef TIMING
 	PrecisionTimeLapse ptl;
 	ptl.start();
 #endif 	
     size_t t;
 	uint8_t rr,cc;
-    if (value == "." || value == "0") {
+    if (value == '.' || value == '0') {
         puzzle[r][c] = value;
         return true;
     } else {
-        if (allowableValues[r][c].find(value) == string::npos)
+        if (allowableValues[r][c].find((char)'A') == string::npos)
             return false;
         allowableValues[r][c] = "";
         puzzle[r][c] = value;
@@ -344,7 +344,7 @@ bool Sudoku::setValue(uint8_t r, uint8_t c, string value) {
 	return true;
 }
 
-bool Sudoku::setValue(RowCol rc, string value) {
+bool Sudoku::setValue(RowCol rc, char value) {
     return setValue(rc.row, rc.col, value);
 }
 
@@ -356,6 +356,8 @@ bool Sudoku::solveOnes(void) {
 	bool solvedSome = true;
     uint32_t iteration = 0;
     uint32_t maxIteration = 81;
+    string allValues;
+    allValues.resize(81*10);
 	while (solvedSome == true && iteration < maxIteration) {
         iteration++;
 		solvedSome = false;
@@ -365,15 +367,15 @@ bool Sudoku::solveOnes(void) {
                 if (allowableValues[r][c].size() == 1) {
                     // and set the value
                     solvedSome = true;
-                    setValue(r, c, allowableValues[r][c]);
+                    setValue(r, c, allowableValues[r][c][0]);
                 }
             }
         }
 		// look through all units and see if any value appears only one time
         for(array<RowCol,9> ul : rcUnitList) {
-            string allValues = "";
+            allValues.clear();
 			for (RowCol rc : ul) {
-                allValues += allowableValues[rc.row][rc.col];
+                allValues += allowableValues[rc.row][rc.col];;
 			}
 			for (char d : digitsText) {
 				// if number appears once
@@ -382,7 +384,7 @@ bool Sudoku::solveOnes(void) {
 					for (RowCol u : ul) {
 						if (count(allowableValues[u.row][u.col].begin(), allowableValues[u.row][u.col].end(), d) == 1) {
 							solvedSome = true;
-							setValue(u, string(1, d));
+							setValue(u, d);
                           break;
 						}
 					}
@@ -417,66 +419,7 @@ bool Sudoku::isPuzzleSolved(void) {
     return true;
 }
 
-string Sudoku::getPuzzleText(void) {
-	string retval;
-    for (auto r:rows) {
-        for (auto c:cols) {
-            retval += puzzle[r][c];
-        }
-	}
-	return retval;
-}
-
-string Sudoku::getAllowableGuessesText(void) {
-    string retval;
-    string delim = "|";
-    for (auto r:rows) {
-        for (auto c:cols) {
-            if (allowableValues[r][c] != "") {
-                retval += allowableValues[r][c];
-            } else {
-                retval += "0";
-            }
-            retval += delim;
-        }
-    }
-    return retval;
-}
-
-string Sudoku::getPackedPuzzle(void) {
-	string retval;
-	retval = getPuzzleText() + "_" + getAllowableGuessesText();
-	return retval;
-}
-
-void Sudoku::unpackPuzzle(string packed) {
-	size_t us = packed.find('_');
-	string puzzleString = packed.substr(0,us);
-	string allowString = packed.substr(us+1);
-	vector<string> allow;
-    for (auto r:rows) {
-        for (auto c:cols) {
-            puzzle[r][c] = puzzleString.substr(c + 9*r,1);
-        }
-	}
-	size_t vstart = 0;
-	size_t vend = -1;
-	string temp;
-    for (auto r:rows) {
-        for (auto c:cols) {
-            vend = allowString.find('|',vstart);
-            temp = allowString.substr(vstart, vend - vstart);
-            if (temp == "0") {
-                allowableValues[r][c] = "";
-            } else {
-                allowableValues[r][c] = temp;
-            }
-            vstart = vend+1;
-        }
-    }
-}
-
-bool Sudoku::removeGuess(RowCol rc, string value){
+bool Sudoku::removeGuess(RowCol rc, char value){
 	bool retval = true;
     int16_t r=rc.row;
     int16_t c=rc.col;
@@ -536,7 +479,7 @@ Guess Sudoku::getGuess() { // returns square, value
     string temp = allowableValues[square.row][square.col];
 	char t = temp[rand() % temp.length()];
 	//newGuess = Guess(square, string(1,t), puzzle, allowableValues);
-	return Guess(square, string(1,t), puzzle, allowableValues);;
+	return Guess(square, t, puzzle, allowableValues);
 }
 
 bool Sudoku::popGuess() {

@@ -1,6 +1,6 @@
 #include "Guess.h"
 
-Guess::Guess(RowCol _square, string _guess,SUDOKUTYPE _puzzle, SUDOKUTYPE _allowableValues) {
+Guess::Guess(RowCol _square, char _guess,SUDOKUTYPE _puzzle, SUDOKUTYPE _allowableValues) {
     puzzle = _puzzle;
     allowableValues = _allowableValues;
     square = _square;
@@ -16,7 +16,7 @@ Guess::Guess() {
         
     }
 	square = RowCol();
-	guess = "";
+	guess = '\0';
 }
 Guess::Guess(const Guess& g) {
     puzzle = g.puzzle;
@@ -34,9 +34,8 @@ Guess& Guess::operator=(const Guess& cpy) {
 }
 
 string Guess::toString() {
-	//char ss[1000];
-    cout <<" Square: " << square << " Guess: " << guess << endl;
-//    sprintf(ss,"Square: %s, Guess: %s, Puzzle Text: %s\n",square.toString().c_str(), guess.c_str(), puzzleString.c_str());
+	char ss[1000];
+    sprintf(ss,"Square: %s, Guess: %c,\n",square.toString().c_str(), guess);
 	string retval;
 	return retval;
 }

@@ -34,21 +34,17 @@ public:
     
 	bool setPuzzle(string p);
 	//bool setValue(string square, string value);
-    bool setValue(uint8_t row, uint8_t col, string value);
-    bool setValue(RowCol rc, string value);
+    bool setValue(uint8_t row, uint8_t col, char value);
+    bool setValue(RowCol rc, char value);
     
 	void printPuzzle(void);
 	void printPuzzle(string title);
 	void printAllowableValues(void);
 	void printAllowableValues(string title);
 	bool solveOnes(void);
-
-	bool isPuzzleSolved(void); 
-	string getPuzzleText(void);
-	string getAllowableGuessesText(void);
-	string getPackedPuzzle(void);
-	void unpackPuzzle(string);
-	bool removeGuess(RowCol, string);
+	
+    bool isPuzzleSolved(void);
+	bool removeGuess(RowCol, char);
 	bool guessesRemain(void);
 	Guess getGuess();
 	bool popGuess();
