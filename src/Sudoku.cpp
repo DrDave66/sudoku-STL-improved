@@ -354,12 +354,9 @@ bool Sudoku::solveOnes(void) {
 	ptl.start();
 #endif	
 	bool solvedSome = true;
-    uint32_t iteration = 0;
-    uint32_t maxIteration = 81;
     string allValues;
     allValues.resize(81*10);
-	while (solvedSome == true && iteration < maxIteration) {
-        iteration++;
+	while (solvedSome == true) {
 		solvedSome = false;
 		// find squares with only one available value
         for (auto r:rows){
