@@ -34,7 +34,7 @@ void printPuzzleText(Sudoku ss) {
 
 #define SHORTMAIN
 
-#ifdef noSHORTMAIN
+#ifdef SHORTMAIN
 int main() {
     Sudoku s(easy505);
 
