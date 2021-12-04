@@ -54,7 +54,7 @@ public:
 	void printGuessList();
 	void test();
 //private:
-    string allValues;
+    
     static const uint8_t numRows = 9;
     static const uint8_t numCols = 9;
     vector<uint8_t> rows = {0,1,2,3,4,5,6,7,8};

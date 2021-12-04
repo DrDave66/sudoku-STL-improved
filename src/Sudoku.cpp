@@ -4,14 +4,12 @@
 Sudoku::Sudoku() {
 	createVectors();
 	clearPuzzle();
-    allValues.resize(81*10);
 	srand((uint32_t)time(NULL));
 }
 
 Sudoku::Sudoku(string puzzle) {
 	createVectors();
 	setPuzzle(puzzle);
-    allValues.resize(81*10);
 	srand((uint32_t)time(NULL));
 }
 
@@ -93,7 +91,16 @@ void Sudoku::createVectors(void) {
         }
 
 	}
-
+#ifdef PRINTVECTORS
+    cout << endl << "UnitList" << endl;
+    for(uint8_t j = 0 ; j < 27 ; j++) {
+        for (i = 0 ; i < 9 ;i++) {
+            cout << rcUnitList[j][i] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl << endl;
+#endif
 //    // unit dictionary
     RowCol sq;
 	uint8_t unum = 0;
@@ -111,8 +118,23 @@ void Sudoku::createVectors(void) {
             }
         }
     }
-
-    //////	// make peer dictionary
+#ifdef PRINTVECTORS
+    cout << endl << endl;
+    for (auto r : rows) {
+        for (auto c : cols) {
+            sq.set(r,c);
+            cout << "New Unit Dict: " << sq << " " << endl;
+            for ( int unum = 0 ; unum < 3 ; unum++) {
+                for (i = 0 ; i < 9 ; i++) {
+                    cout << rcUnits[r][c][unum][i] << " ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+        }
+    }
+#endif
+//////	// make peer dictionary
     int pnum = 0;
     set<RowCol> peerSet;
     for(auto r : rows) {
@@ -135,28 +157,6 @@ void Sudoku::createVectors(void) {
     }
 
 #ifdef PRINTVECTORS
-    cout << endl << "UnitList" << endl;
-    for(uint8_t j = 0 ; j < 27 ; j++) {
-        for (i = 0 ; i < 9 ;i++) {
-            cout << rcUnitList[j][i] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl << endl;
-    cout << endl << endl;
-    for (auto r : rows) {
-        for (auto c : cols) {
-            sq.set(r,c);
-            cout << "New Unit Dict: " << sq << " " << endl;
-            for ( int unum = 0 ; unum < 3 ; unum++) {
-                for (i = 0 ; i < 9 ; i++) {
-                    cout << rcUnits[r][c][unum][i] << " ";
-                }
-                cout << endl;
-            }
-            cout << endl;
-        }
-    }
     for (auto r:rows) {
         for(auto c:cols) {
             sq.set(r,c);
@@ -191,6 +191,35 @@ bool Sudoku::setPuzzle(string p) {
 /**********************************************************
 **********   Printing Functions ***************************
 ***********************************************************/
+//string Sudoku::printableStringVector(vector<string> vec) {
+//	string s;
+//	for (string v : vec) {
+//		s += v;
+//		s += " ";
+//	}
+//	return s;
+//}
+
+//string Sudoku::printableStringSet(set<string> st) {
+//	string s;
+//	for (string v : st) {
+//		s += v;
+//		s += " ";
+//	}
+//	return s;
+//}
+
+//string Sudoku::printableVectorVectorString(vector<vector<string> > vvs) {
+//	string s;
+//	for (vector<string> vs : vvs) {
+//		for (string v : vs) {
+//			s += v;
+//			s += " ";
+//		}
+//		s += "\n";
+//	}
+//	return s;
+//}
 
 void Sudoku::printPuzzle(string title) {
 	cout << endl << title;
@@ -325,14 +354,9 @@ bool Sudoku::solveOnes(void) {
 	ptl.start();
 #endif	
 	bool solvedSome = true;
-<<<<<<< HEAD
     string allValues;
     allValues.resize(81*10);
 	while (solvedSome == true ) {
-=======
-
-	while (solvedSome == true) {
->>>>>>> 262095d (aaa)
 		solvedSome = false;
 		// find squares with only one available value
         for (auto r:rows){
@@ -416,7 +440,7 @@ bool Sudoku::removeGuess(RowCol rc, char value){
 bool Sudoku::guessesRemain(void) {
     for(auto r:rows) {
         for (auto c:cols) {
-            if(allowableValues[r][c].length() > 0)
+            if(allowableValues[r][c].length() > 1)
                 return true;
         }
 	}
@@ -425,7 +449,7 @@ bool Sudoku::guessesRemain(void) {
 
 Guess Sudoku::getGuess() { // returns square, value
 	// guess is returned as square,value in an array
-	uint8_t minCount = 9;
+	uint32_t minCount = 9;
 	// iterate through squares and get lowest count > 1
 	size_t len;
     for(auto r:rows) {
@@ -434,7 +458,7 @@ Guess Sudoku::getGuess() { // returns square, value
             if ( len > 1 ) {
                 if (len < minCount)
                 {
-                    minCount = (uint8_t)len;
+                    minCount = (uint32_t)len;
                 }
             }
         }
@@ -442,7 +466,7 @@ Guess Sudoku::getGuess() { // returns square, value
 	vector<RowCol> subset;
     for(auto r:rows) {
         for (auto c:cols) {
-            if ((uint8_t)allowableValues[r][c].size() == minCount) {
+            if (allowableValues[r][c].size() == minCount) {
                 subset.push_back(RowCol(r,c));
             }
         }
