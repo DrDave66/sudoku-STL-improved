@@ -72,12 +72,9 @@ int main()
 	double time;
 	total.start();
 <<<<<<< HEAD
-<<<<<<< HEAD
 	uint16_t onePercent = (uint16_t)(pf.getNumberOfPuzzles()/100);
 =======
 >>>>>>> 262095d (aaa)
-=======
->>>>>>> 262095dae3d09e95ae82c8d0d1a8846f1a710255
 	for (uint32_t i = 0; i < pf.getNumberOfPuzzles(); i++) {
 		s.setPuzzle(pf.getPuzzle(i));
 		ptl.start();
@@ -91,7 +88,6 @@ int main()
 		minTime = min(minTime, time);
 		maxTime = max(maxTime, time);
 		sumTime += time;
-<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< HEAD
 		//cout << time << " " << sumTime << "  ";
@@ -103,9 +99,6 @@ int main()
 =======
 		if (i % 1000 == 0) {
 >>>>>>> Stashed changes
-=======
-		if (i % 10000 == 0) {
->>>>>>> 262095dae3d09e95ae82c8d0d1a8846f1a710255
 			printf("%6.2f%%   \n", (double)i/(double)numPuzzles * 100);
 		}
 	}

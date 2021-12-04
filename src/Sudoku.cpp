@@ -326,7 +326,6 @@ bool Sudoku::solveOnes(void) {
 #endif	
 	bool solvedSome = true;
 <<<<<<< HEAD
-<<<<<<< HEAD
     string allValues;
     allValues.resize(81*10);
 	while (solvedSome == true ) {
@@ -334,10 +333,6 @@ bool Sudoku::solveOnes(void) {
 
 	while (solvedSome == true) {
 >>>>>>> 262095d (aaa)
-=======
-
-	while (solvedSome == true) {
->>>>>>> 262095dae3d09e95ae82c8d0d1a8846f1a710255
 		solvedSome = false;
 		// find squares with only one available value
         for (auto r:rows){
@@ -442,7 +437,7 @@ bool Sudoku::removeGuess(RowCol rc, char value){
 bool Sudoku::guessesRemain(void) {
     for(auto r:rows) {
         for (auto c:cols) {
-            if(allowableValues[r][c].length() > 0)
+            if(allowableValues[r][c].length() > 1)
                 return true;
         }
 	}
