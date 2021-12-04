@@ -325,7 +325,7 @@ bool Sudoku::setValue(uint8_t r, uint8_t c, char value) {
         puzzle[r][c] = value;
         return true;
     } else {
-        if (allowableValues[r][c].find((char)'A') == string::npos)
+        if (allowableValues[r][c].find(value) == string::npos)
             return false;
         allowableValues[r][c] = "";
         puzzle[r][c] = value;
@@ -354,12 +354,9 @@ bool Sudoku::solveOnes(void) {
 	ptl.start();
 #endif	
 	bool solvedSome = true;
-    uint32_t iteration = 0;
-    uint32_t maxIteration = 81;
     string allValues;
     allValues.resize(81*10);
-	while (solvedSome == true && iteration < maxIteration) {
-        iteration++;
+	while (solvedSome == true ) {
 		solvedSome = false;
 		// find squares with only one available value
         for (auto r:rows){
@@ -412,7 +409,7 @@ bool Sudoku::isPuzzleSolved(void) {
 		}
 		str[i] = '\0';
 		for (uint8_t j = 0; j < 9; j++) {
-			if (strchr(str, digits[i]) == NULL)
+			if (strchr(str, digits[j]) == NULL)
 				return false;
 		}
 	}

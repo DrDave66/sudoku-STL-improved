@@ -21,13 +21,23 @@ string solved1 = "43182976527651398459846731238925164764237859115794623896478512
 string solved2 = "687942351591376284342158769465239178138567942279814635853791426924683517716425893";
 string solved3 = "523846917961537428487219653154693782632478195798152346879324561316985274245761839";
 string solved4 = "152483679697152348438976251314765892869241735275398164786524913941837526523619487";
+string solved5 = "176923584524817639893654271957348162638192457412765398265489713781236945349571826";
+
+void printPuzzleText(Sudoku ss) {
+    for(int r = 0 ; r < 9 ; r++) {
+        for (int c = 0 ; c < 9 ; c++) {
+            cout << ss.puzzle[r][c];
+        }
+    }
+    cout << endl;
+}
+
 #define SHORTMAIN
 
 #ifdef noSHORTMAIN
 int main() {
     Sudoku s(easy505);
-    array<array<string, 9> ,9> puzzle;
-    array<array<string, 9> ,9> allowableValues;
+
     s.printPuzzle();
     s.printAllowableValues();
 
@@ -35,6 +45,12 @@ int main() {
     s.solvePuzzle();
     cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
     s.printPuzzle();
+    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
+    printPuzzleText(s);
+    s.puzzle[0][0] = "3";
+    printPuzzleText(s);
+    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
+    printf("\n");
 }
 
 #else
@@ -56,7 +72,7 @@ int main()
 	double sumTime =  0.0;
 	double time;
 	total.start();
-//	uint16_t halfPercent = (uint16_t)(pf.getNumberOfPuzzles()*0.005);
+	uint16_t onePercent = (uint16_t)(pf.getNumberOfPuzzles()/100);
 	for (uint32_t i = 0; i < pf.getNumberOfPuzzles(); i++) {
 #ifdef PRINTING
         cout << i+1 << " ";
@@ -85,7 +101,7 @@ int main()
 		sumTime += time;
 		//cout << time << " " << sumTime << "  ";
 		//cout << "Total time: " << ptl.elapsedString() << " solved " << solved << " out of " << i+1 << endl;
-		if (i % 100000 == 0) {
+		if (i % onePercent == 0) {
 			printf("%6.2f%%   \n", (double)i/(double)numPuzzles * 100);
 			
 		}
