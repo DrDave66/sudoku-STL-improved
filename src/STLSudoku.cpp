@@ -56,9 +56,8 @@ int main() {
 #else
 int main()
 {
-
 	Puzzles p;
-	Puzzles pf("../sudoku-puzzles/1MP.txt");
+	Puzzles pf("../sudoku-puzzles/100000P.txt");
 	cout << pf.getNumberOfPuzzles() << " puzzles loaded" << endl << endl << endl;
 	if (pf.getNumberOfPuzzles() == 0)
 		return 1;
@@ -72,11 +71,11 @@ int main()
 	double sumTime =  0.0;
 	double time;
 	total.start();
+<<<<<<< HEAD
 	uint16_t onePercent = (uint16_t)(pf.getNumberOfPuzzles()/100);
+=======
+>>>>>>> 262095d (aaa)
 	for (uint32_t i = 0; i < pf.getNumberOfPuzzles(); i++) {
-#ifdef PRINTING
-        cout << i+1 << " ";
-#endif
 		s.setPuzzle(pf.getPuzzle(i));
 		ptl.start();
 		s.solvePuzzle();
@@ -84,30 +83,22 @@ int main()
 		if (s.isPuzzleSolved() == true)
 		{
    			solved += 1;
-#ifdef PRINTING
-			cout << "SOLVED\n";
-#endif
-			//s.printPuzzle();
-		}
-		else {
-#ifdef PRINTING
-			cout << "NOTSOLVED \n";
-#endif
 		}
 		time = ptl.elapsed();
-
 		minTime = min(minTime, time);
 		maxTime = max(maxTime, time);
 		sumTime += time;
+<<<<<<< HEAD
 		//cout << time << " " << sumTime << "  ";
 		//cout << "Total time: " << ptl.elapsedString() << " solved " << solved << " out of " << i+1 << endl;
 		if (i % onePercent == 0) {
+=======
+		if (i % 10000 == 0) {
+>>>>>>> 262095d (aaa)
 			printf("%6.2f%%   \n", (double)i/(double)numPuzzles * 100);
-			
 		}
 	}
 	total.stop();
-    //cout << " Total time: " << total.elapsed() << " seconds" << endl;
     cout << "Solved " << solved << " out of " << pf.getNumberOfPuzzles() << " puzzles\n";
 	cout << "Min time: " << minTime*1000.0 << " ms, Max time: " << maxTime*1000.0 << " ms, Average Time: " << (double)sumTime / (double)solved * 1000 << " ms, Total: " << total.elapsedString(SEC) << " sec" << endl;
 
