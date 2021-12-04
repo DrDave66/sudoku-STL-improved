@@ -384,12 +384,33 @@ bool Sudoku::isPuzzleSolved(void) {
 			i++;
 		}
 		str[i] = '\0';
+<<<<<<< Updated upstream
 		for (uint8_t j = 0; j < 9; j++) {
 			if (strchr(str, digits[j]) == NULL)
+=======
+		for (i = 0; i < 9; i++) {
+			if (strchr(str, digits[i]) == NULL)
+>>>>>>> Stashed changes
 				return false;
 		}
 	}
     return true;
+//    char str[10];
+//    str[9] = '\0';
+//    uint8_t i;
+//    for (array<RowCol, 9> ul : rcUnitList) {
+//        i = 0;
+//        for (RowCol rc : ul) {
+//            str[i] = puzzle[ul[i].row][ul[i].col][0];
+//            i++;
+//        }
+//        str[i] = '\0';
+//        for (uint8_t j = 0; j < 9; j++) {
+//            if (strchr(str, digits[i]) == NULL)
+//                return false;
+//        }
+//    }
+//    return true;
 }
 
 bool Sudoku::removeGuess(RowCol rc, char value){
@@ -416,7 +437,7 @@ bool Sudoku::removeGuess(RowCol rc, char value){
 bool Sudoku::guessesRemain(void) {
     for(auto r:rows) {
         for (auto c:cols) {
-            if(allowableValues[r][c].length() > 0)
+            if(allowableValues[r][c].length() > 1)
                 return true;
         }
 	}
@@ -458,26 +479,32 @@ Guess Sudoku::getGuess() { // returns square, value
 bool Sudoku::popGuess() {
     if(guessNumber == 0)
         return false;
-    guessNumber--;
     Guess lastGuess;
-    lastGuess = guessList[guessNumber];
+    lastGuess = guessList[guessNumber-1];
     puzzle = lastGuess.puzzle;
     allowableValues = lastGuess.allowableValues;
     removeGuess(lastGuess.square, lastGuess.guess);
+    guessNumber--;
+    cout << "pop " << lastGuess.square << ":" << (char)lastGuess.guess << " -- ";
+    printGuessList();
 	return true;
 }
 
 void Sudoku::pushGuess(const Guess guess) {
 	guessList[guessNumber] = guess;
+    cout << "push " << guess.square << ":" << (char)guess.guess << " -- ";
+    printGuessList();
     guessNumber++;
+
 }
 
 void Sudoku::printGuessList() {
     if (guessNumber == 0)
         cout << "Empty";
     else {
+        cout << guessNumber << " ";
         for(uint8_t i = 0 ; i < guessNumber ; i++) {
-            cout << guessList[i].square << ":" << guessList[i].guess << " ";
+            cout << guessList[i].square.toString() << ":" << guessList[i].guess << " ";
         }
     }
 	cout << endl << flush;
@@ -497,6 +524,7 @@ bool Sudoku::startGuessing() {
 	while(!isPuzzleSolved()) {
 		while (guessesRemain()) {
 			Guess g = getGuess();
+            guessNumber++;
 			pushGuess(g);
 			setValue(g.square, g.guess);
 			solveOnes();
@@ -504,15 +532,14 @@ bool Sudoku::startGuessing() {
 				popGuess();
 			}
 		}
-		if (isPuzzleSolved() == false) {
-			if (guessList.size() == 0) {
-			}
+ 		if (isPuzzleSolved() == false) {
 			if(popGuess() == false) {
 				return false;
 			}
 		}
 			
 	}
+
 	return isPuzzleSolved();
 }
 
