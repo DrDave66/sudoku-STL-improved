@@ -32,7 +32,7 @@ void printPuzzleText(Sudoku ss) {
     cout << endl;
 }
 
-#define SHORTMAIN
+#define noSHORTMAIN
 
 #ifdef SHORTMAIN
 int main() {
@@ -58,7 +58,7 @@ int main()
 {
 
 	Puzzles p;
-	Puzzles pf("../sudoku-puzzles/100000P.txt");
+	Puzzles pf("../sudoku-puzzles/1MP.txt");
 	cout << pf.getNumberOfPuzzles() << " puzzles loaded" << endl << endl << endl;
 	if (pf.getNumberOfPuzzles() == 0)
 		return 1;
@@ -114,73 +114,8 @@ int main()
 }
 
 #endif
-// 1mp fixed str in solve ones  Min time: 0.016326 ms, Max time: 0.973024 ms, Average Time: 0.0194661 ms, Total: 21.280102 sec
-// 1MP after SetValue to char   Min time: 0.016331 ms, Max time: 0.908478 ms, Average Time: 0.0193517 ms, Total: 21.155011 sec
-// 1M before SetValue to char   Min time: 0.016291 ms, Max time: 0.973226 ms, Average Time: 0.0196575 ms, Total: 21.474486 sec
-// 1MP uint8_t                  Min time: 0.0136 ms, Max time: 0.3281 ms, Average Time: 0.0186772 ms, Total: 40.359589 sec
-// 1MP better STL               Min time: 0.0141 ms, Max time: 0.8683 ms, Average Time: 0.0199026 ms, Total: 42.661107 sec WORK
+//  time to solve is 40 usec.  non stl is 30 usec
 
+// 10MP-Failed.txt      Min time: 0.107397 ms, Max time: 180.694 ms, Average Time: 0.963753 ms, Total: 364.072973 sec
+// 1MP.txt              Min time: 0.035211 ms, Max time: 7.05304 ms, Average Time: 0.0410138 ms, Total: 55.709054 sec
 
-// 10K better stl home  Min time: 0.023379 ms, Max time: 0.939235 ms, Average Time: 0.0355679 ms, Total: 0.382421 sec
-//10k no map			Min time: 0.0149 ms, Max time: 0.2179 ms, Average Time: 0.0208094 ms, Total: 0.448435 sec WORK
-// 10k no map           Min time: 0.055056 ms, Max time: 6.6815 ms, Average Time: 0.0721173 ms, Total: 1.380305 sec
-// time for 10000P.txt -Min time: 0.2968 ms, Max time: 1.1741 ms, Average Time: 0.468564 ms, Total: 8.292689 sec
-// for 5000P.txt -      Min time: 0.3026 ms, Max time: 1.0865 ms, Average Time: 0.466454 ms, Total: 4.142156 sec
-
-// mac release
-//blank constructor
-//parameter ../../../../SudokuPuzzles/5000P.txt
-//5000 puzzles loaded
-//Solved 5000 out of 5000 puzzles
-//Min time: 0.111575 ms, Max time: 19.5198 ms, Average Time: 0.163679 ms, Total: 1.376686 sec
-//Program ended with exit code: 0
-
-// mac debug
-//blank constructor
-//parameter ../../../../SudokuPuzzles/5000P.txt
-//5000 puzzles loaded
-//Solved 5000 out of 5000 puzzles
-//Min time: 0.466408 ms, Max time: 88.6324 ms, Average Time: 0.572413 ms, Total: 4.465807 sec
-//Program ended with exit code: 0
-
-// 	    1   2   3    4   5   6    7   8   9
-//   =========================================
-// A || . | 4 | 3 || . | 8 | . || 2 | 5 | . ||
-// B || 6 | . | . || . | . | . || . | . | . ||
-// C || . | . | . || . | . | 1 || . | 9 | 4 ||
-//   || --------- || --------- || --------- ||
-// D || 9 | . | . || . | . | 4 || . | 7 | . ||
-// E || . | . | . || 6 | . | 8 || . | . | . ||
-// F || . | 1 | . || 2 | . | . || . | . | 3 ||
-//   || --------- || --------- || --------- ||
-// G || 8 | 2 | . || 5 | . | . || . | . | . ||
-// H || . | . | . || . | . | . || . | . | 5 ||
-// I || . | 3 | 4 || . | 9 | . || 7 | 1 | . ||
-//   =========================================
-
-//      1   2   3    4   5   6    7   8   9
-//   =========================================
-// A || 1 | 4 | 3 || 9 | 8 | 6 || 2 | 5 | 7 ||
-// B || 6 | 7 | 9 || 4 | 2 | 5 || 3 | 8 | 1 ||
-// C || 2 | 8 | 5 || 7 | 3 | 1 || 6 | 9 | 4 ||
-//   || --------- || --------- || --------- ||
-// D || 9 | 6 | 2 || 3 | 5 | 4 || 1 | 7 | 8 ||
-// E || 3 | 5 | 7 || 6 | 1 | 8 || 9 | 4 | 2 ||
-// F || 4 | 1 | 8 || 2 | 7 | 9 || 5 | 6 | 3 ||
-//   || --------- || --------- || --------- ||
-// G || 8 | 2 | 1 || 5 | 6 | 7 || 4 | 3 | 9 ||
-// H || 7 | 9 | 6 || 1 | 4 | 3 || 8 | 2 | 5 ||
-// I || 5 | 3 | 4 || 8 | 9 | 2 || 7 | 1 | 6 ||
-//   =========================================
-// Puzzle 6, Solved = True, Time = 0.2327 ms
-
-
-// solved with ones/peers
-// grid1 = '003020600900305001001806400008102900700000008006708200002609500800203009005010300'
-// grid3 = "802050701007082460010900000600001832500000009184300006000004020095610300308090607"
-
-
-// not solved with ones/peers
-// easy505 = "1..92....524.1...........7..5...81.2.........4.27...9..6...........3.945....71..6"
-// grid2 = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
-// hard1 = '.....6....59.....82....8....45........3........6..3.54...325..6..................'
