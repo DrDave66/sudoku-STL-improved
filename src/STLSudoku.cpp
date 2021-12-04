@@ -57,7 +57,7 @@ int main() {
 int main()
 {
 	Puzzles p;
-	Puzzles pf("../sudoku-puzzles/10MPFailed.txt");
+	Puzzles pf("../sudoku-puzzles/100000P.txt");
 	cout << pf.getNumberOfPuzzles() << " puzzles loaded" << endl << endl << endl;
 	if (pf.getNumberOfPuzzles() == 0)
 		return 1;
@@ -88,7 +88,6 @@ int main()
 		minTime = min(minTime, time);
 		maxTime = max(maxTime, time);
 		sumTime += time;
-<<<<<<< Updated upstream
 <<<<<<< HEAD
 		//cout << time << " " << sumTime << "  ";
 		//cout << "Total time: " << ptl.elapsedString() << " solved " << solved << " out of " << i+1 << endl;
@@ -96,9 +95,6 @@ int main()
 =======
 		if (i % 10000 == 0) {
 >>>>>>> 262095d (aaa)
-=======
-		if (i % 1000 == 0) {
->>>>>>> Stashed changes
 			printf("%6.2f%%   \n", (double)i/(double)numPuzzles * 100);
 		}
 	}
