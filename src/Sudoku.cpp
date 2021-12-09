@@ -176,7 +176,7 @@ void Sudoku::clearPuzzle(void) {
 }
 
 bool Sudoku::setPuzzle(string p) {
-    if(p.size() != 81)
+    if(p.size() < 81)
         return false;
     clearPuzzle();
     for(auto r:rows) {
@@ -520,6 +520,7 @@ bool Sudoku::startGuessing() {
 	guessNumber = 0;
 	while(!isPuzzleSolved()) {
 		while (guessesRemain()) {
+            printf("guess\n");
 			Guess g = getGuess();
 			pushGuess(g);
 			setValue(g.square, g.guess);
