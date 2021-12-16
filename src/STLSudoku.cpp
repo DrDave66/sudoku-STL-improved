@@ -1,6 +1,8 @@
 // vcSudoku.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
+#include <string>
+#include <vector>
+using namespace std;
 #include "Puzzles.h"
 #include "Sudoku.h"
 #include "PrecisionTimeLapse.h"
@@ -24,6 +26,7 @@ string solved4 = "15248367969715234843897625131476589286924173527539816478652491
 string solved5 = "176923584524817639893654271957348162638192457412765398265489713781236945349571826";
 
 void printPuzzleText(Sudoku ss) {
+    string s;
     for(int r = 0 ; r < 9 ; r++) {
         for (int c = 0 ; c < 9 ; c++) {
             cout << ss.puzzle[r][c];
@@ -32,25 +35,37 @@ void printPuzzleText(Sudoku ss) {
     cout << endl;
 }
 
-#define noSHORTMAIN
+#define SHORTMAIN
+// Loaded 100 		puzzles in 0.784945 msec, 7.849450 usec/puzzle
+// Loaded 1000 		puzzles in 2.524844 msec, 2.524844 usec/puzzle
+// Loaded 10000 	puzzles in 16.981709 msec, 1.698171 usec/puzzle
+// Loaded 100000 	puzzles in 113.327293 msec, 1.133273 usec/puzzle
+// Loaded 1000000 	puzzles in 1011.960570 msec, 1.011961 usec/puzzle
+// Loaded 10000000 	puzzles in 10631.764658 msec, 1.063176 usec/puzzle
 
 #ifdef SHORTMAIN
 int main() {
-    Sudoku s(blank);
+	string basename = "/Users/dave/code/GitHub/sudoku-puzzles/";
+	vector<string> fname;
+	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/100P.txt");
+	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/1000P.txt");
+	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/10000P.txt");
+	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/100000P.txt");
+	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/1MP.txt");
+	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/10MP.txt");
+	for (string f : fname) {
+		cout << f << endl;
+	}
+	Puzzles pf;
+	PrecisionTimeLapse ptl;
+	uint32_t numLoaded = 0;
+	for (string f : fname) {
+		ptl.start();
+		numLoaded = pf.loadFromFile(f);
+		ptl.stop();
+		printf("Loaded %d puzzles in %f msec, %f usec/puzzle\n",numLoaded, ptl.elapsed()*1000.0, ptl.elapsed()*1000000/numLoaded);
+	}
 
-    s.printPuzzle();
-    s.printAllowableValues();
-
-    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
-    s.solvePuzzle();
-    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
-    s.printPuzzle();
-    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
-    printPuzzleText(s);
-    s.puzzle[0][0] = "3";
-    printPuzzleText(s);
-    cout << "Puzzle solved = " << s.isPuzzleSolved() << endl;
-    printf("\n");
 }
 
 #else

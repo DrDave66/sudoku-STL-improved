@@ -17,6 +17,7 @@ public:
 	Puzzles(string fname);
 	uint32_t getNumberOfPuzzles(void);
 	string getPuzzle(uint32_t num);
+	uint32_t loadFromFile(string fname);
 
 private:
 	string filename;

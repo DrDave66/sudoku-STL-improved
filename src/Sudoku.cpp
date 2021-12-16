@@ -520,7 +520,6 @@ bool Sudoku::startGuessing() {
 	guessNumber = 0;
 	while(!isPuzzleSolved()) {
 		while (guessesRemain()) {
-            printf("guess\n");
 			Guess g = getGuess();
 			pushGuess(g);
 			setValue(g.square, g.guess);
