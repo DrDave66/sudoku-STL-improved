@@ -357,17 +357,21 @@ bool Sudoku::solveOnes(void) {
     string allValues;
     allValues.resize(81*10);
 	while (solvedSome == true ) {
-		solvedSome = false;
-		// find squares with only one available value
-        for (auto r:rows){
-            for (auto c:cols) {
-                if (allowableValues[r][c].size() == 1) {
-                    // and set the value
-                    solvedSome = true;
-                    setValue(r, c, allowableValues[r][c][0]);
-                }
-            }
-        }
+		while(solvedSome == true) {
+			solvedSome = false;
+			// find squares with only one available value
+			for (auto r:rows){
+				for (auto c:cols) {
+					if (allowableValues[r][c].size() == 1) {
+						// and set the value
+						solvedSome = true;
+						setValue(r, c, allowableValues[r][c][0]);
+					}
+				}
+			}
+		}
+//		if(isPuzzleSolved() == true)
+//			return true;
 		// look through all units and see if any value appears only one time
         for(array<RowCol,9> ul : rcUnitList) {
             allValues.clear();
@@ -449,6 +453,7 @@ bool Sudoku::guessesRemain(void) {
 
 Guess Sudoku::getGuess() { // returns square, value
 	// guess is returned as square,value in an array
+	cout << "guess\n";
 	uint32_t minCount = 9;
 	// iterate through squares and get lowest count > 1
 	size_t len;

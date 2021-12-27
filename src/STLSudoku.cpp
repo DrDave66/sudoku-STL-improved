@@ -43,28 +43,13 @@ void printPuzzleText(Sudoku ss) {
 // Loaded 1000000 	puzzles in 1011.960570 msec, 1.011961 usec/puzzle
 // Loaded 10000000 	puzzles in 10631.764658 msec, 1.063176 usec/puzzle
 
-#ifdef SHORTMAIN
+#ifdef noSHORTMAIN
 int main() {
-	string basename = "/Users/dave/code/GitHub/sudoku-puzzles/";
-	vector<string> fname;
-	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/100P.txt");
-	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/1000P.txt");
-	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/10000P.txt");
-	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/100000P.txt");
-	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/1MP.txt");
-	fname.push_back("/Users/dave/code/GitHub/sudoku-puzzles/10MP.txt");
-	for (string f : fname) {
-		cout << f << endl;
-	}
-	Puzzles pf;
-	PrecisionTimeLapse ptl;
-	uint32_t numLoaded = 0;
-	for (string f : fname) {
-		ptl.start();
-		numLoaded = pf.loadFromFile(f);
-		ptl.stop();
-		printf("Loaded %d puzzles in %f msec, %f usec/puzzle\n",numLoaded, ptl.elapsed()*1000.0, ptl.elapsed()*1000000/numLoaded);
-	}
+	Sudoku s(grid3);
+	s.printPuzzle();
+	s.printAllowableValues();
+	s.solveOnes();
+	s.printPuzzle();
 
 }
 
@@ -73,7 +58,7 @@ int main()
 {
 
 	Puzzles p;
-	Puzzles pf("../sudoku-puzzles/1MP.txt");
+	Puzzles pf("../../sudoku-puzzles/1MP.txt");
 	cout << pf.getNumberOfPuzzles() << " puzzles loaded" << endl << endl << endl;
 	if (pf.getNumberOfPuzzles() == 0)
 		return 1;
@@ -133,4 +118,7 @@ int main()
 
 // 10MP-Failed.txt      Min time: 0.107397 ms, Max time: 180.694 ms, Average Time: 0.963753 ms, Total: 364.072973 sec
 // 1MP.txt              Min time: 0.035211 ms, Max time: 7.05304 ms, Average Time: 0.0410138 ms, Total: 55.709054 sec
+// 1MP gcc				Min time: 0.021334 ms, Max time: 5.1635 ms, Average Time: 0.0305412 ms, Total: 66.192528 sec
 
+//Min time: 0.021301 ms, Max time: 5.45383 ms, Average Time: 0.0308044 ms, Total: 62.168077 sec
+//Min time: 0.017706 ms, Max time: 3.77649 ms, Average Time: 0.023698 ms, Total: 55.092577 sec
