@@ -370,8 +370,8 @@ bool Sudoku::solveOnes(void) {
 				}
 			}
 		}
-//		if(isPuzzleSolved() == true)
-//			return true;
+		if(isPuzzleSolved() == true)
+			return true;
 		// look through all units and see if any value appears only one time
         for(array<RowCol,9> ul : rcUnitList) {
             allValues.clear();
