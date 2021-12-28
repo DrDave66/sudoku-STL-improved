@@ -35,7 +35,6 @@ void printPuzzleText(Sudoku ss) {
     cout << endl;
 }
 
-#define SHORTMAIN
 // Loaded 100 		puzzles in 0.784945 msec, 7.849450 usec/puzzle
 // Loaded 1000 		puzzles in 2.524844 msec, 2.524844 usec/puzzle
 // Loaded 10000 	puzzles in 16.981709 msec, 1.698171 usec/puzzle
@@ -43,17 +42,17 @@ void printPuzzleText(Sudoku ss) {
 // Loaded 1000000 	puzzles in 1011.960570 msec, 1.011961 usec/puzzle
 // Loaded 10000000 	puzzles in 10631.764658 msec, 1.063176 usec/puzzle
 
-#ifdef noSHORTMAIN
-int main() {
-	Sudoku s(grid3);
-	s.printPuzzle();
-	s.printAllowableValues();
-	s.solveOnes();
-	s.printPuzzle();
+#define xSHORTMAIN
 
+
+#ifdef SHORTMAIN
+int main() {
+	
 }
 
+
 #else
+
 int main()
 {
 

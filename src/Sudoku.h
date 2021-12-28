@@ -14,6 +14,8 @@
 #include <cstring>
 #include <cstdlib>
 #include <ctime>
+#include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -46,6 +48,7 @@ public:
     bool isPuzzleSolved(void);
 	bool removeGuess(RowCol, char);
 	bool guessesRemain(void);
+	Guess getGuessRandom();
 	Guess getGuess();
 	bool popGuess();
 	void pushGuess(const Guess);

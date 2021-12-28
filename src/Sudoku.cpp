@@ -191,35 +191,6 @@ bool Sudoku::setPuzzle(string p) {
 /**********************************************************
 **********   Printing Functions ***************************
 ***********************************************************/
-//string Sudoku::printableStringVector(vector<string> vec) {
-//	string s;
-//	for (string v : vec) {
-//		s += v;
-//		s += " ";
-//	}
-//	return s;
-//}
-
-//string Sudoku::printableStringSet(set<string> st) {
-//	string s;
-//	for (string v : st) {
-//		s += v;
-//		s += " ";
-//	}
-//	return s;
-//}
-
-//string Sudoku::printableVectorVectorString(vector<vector<string> > vvs) {
-//	string s;
-//	for (vector<string> vs : vvs) {
-//		for (string v : vs) {
-//			s += v;
-//			s += " ";
-//		}
-//		s += "\n";
-//	}
-//	return s;
-//}
 
 void Sudoku::printPuzzle(string title) {
 	cout << endl << title;
