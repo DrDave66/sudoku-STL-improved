@@ -6,6 +6,7 @@ sudoku-STL-improved.vcxproj
 sudoku-STL-improved.vcxproj.filters
 sudoku-STL-improved.vcxproj.user
 .vscode/*
+build/**
 
 # resource files
 src/python variables.txt
