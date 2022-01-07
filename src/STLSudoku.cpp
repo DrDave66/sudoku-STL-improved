@@ -94,7 +94,9 @@ int main()
 #endif
 		}
 		time = ptl.elapsed();
-
+		if(s.guessNumber > 0) {
+			printf("Puzzle %d needed a guess\n",i);
+		}
 		minTime = min(minTime, time);
 		maxTime = max(maxTime, time);
 		sumTime += time;
@@ -117,7 +119,8 @@ int main()
 
 // 10MP-Failed.txt      Min time: 0.107397 ms, Max time: 180.694 ms, Average Time: 0.963753 ms, Total: 364.072973 sec
 // 1MP.txt              Min time: 0.035211 ms, Max time: 7.05304 ms, Average Time: 0.0410138 ms, Total: 55.709054 sec
-// 1MP gcc				Min time: 0.021334 ms, Max time: 5.1635 ms, Average Time: 0.0305412 ms, Total: 66.192528 sec
+// 1MP gcc mac			Min time: 0.021334 ms, Max time: 5.1635 ms, Average Time: 0.0305412 ms, Total: 66.192528 sec
+// 1MP gcc 11 linux		Min time: 0.015448 ms, Max time: 24.2367 ms, Average Time: 0.0195959 ms, Total: 41.983228 sec
 
 //Min time: 0.021301 ms, Max time: 5.45383 ms, Average Time: 0.0308044 ms, Total: 62.168077 sec
 //Min time: 0.017706 ms, Max time: 3.77649 ms, Average Time: 0.023698 ms, Total: 55.092577 sec
